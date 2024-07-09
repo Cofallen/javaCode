@@ -17,11 +17,9 @@
 // 排序： 把节点按魔种制定的顺序重新弄排列，例如递增或递减
 
 
-
-
 public class Main {
     public static void main(String[] args){
-        System.out.println("hello world!");
+        insertionSort.end();
     }
 }
 
