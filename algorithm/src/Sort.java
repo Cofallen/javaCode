@@ -82,12 +82,16 @@ class shellSort{
     public static void sort(Comparable[] arr){
         int j;
         for (int gap = arr.length / 2; gap > 0; gap /= 2){
-            // 取gap后面的数
+            // 下面是插入排序，步长为gap, 把 1 => gap 即可
+            // 不考虑所有组第一个数字的顺序，从gap开始
             for (int i = gap; i < arr.length; i++){
+                // 临时变量，(有的教程空出来arr[0]盛放), 不断比较的数，最后盛放各个组最小的数
                 Comparable temp = arr[i];
+                // j -= gap 本组不断向前比较，只要小就换
                 for (j = i; j > gap && temp.compareTo(arr[j - gap]) < 0; j-= gap){
                     arr[j] = arr[j - gap];
                 }
+                // 将小的换回来，此时 j 已经是指向较小的坐标，也就是正确的位置
                 arr[j] = temp;
             }
         }
