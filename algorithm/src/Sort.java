@@ -69,3 +69,41 @@ class insertionSort{
         }
     }
 }
+
+// 希尔排序 / 缩小增量排序
+// 比较相距一定间隔的元素来进行
+// 时间复杂度O(n^(1.3-2)), 空间复杂度O(1), 对中等大小规模表现良好，比O(n^2)算法快得多
+// @hint 交换不相邻的元素局部排序，最终使用insertionSort排序
+// @step example gap = length / 2; recurse = gap = gap / 2; 排序用插入排序
+class shellSort{
+    static int N = 20;
+    static Integer[] arr = new Integer[N];
+
+    public static void sort(Comparable[] arr){
+        int j;
+        for (int gap = arr.length / 2; gap > 0; gap /= 2){
+            // 取gap后面的数
+            for (int i = gap; i < arr.length; i++){
+                Comparable temp = arr[i];
+                for (j = i; j > gap && temp.compareTo(arr[j - gap]) < 0; j-= gap){
+                    arr[j] = arr[j - gap];
+                }
+                arr[j] = temp;
+            }
+        }
+    }
+    public static void end(){
+        arr = func.randomGenerator(N, 100000);
+        for (int i = 0; i < arr.length; i++){
+            System.out.print(arr[i] + " ");
+            if ((i % 5) == 0)
+                System.out.println(" ");
+        }
+        shellSort.sort(arr);
+        for (int i = 0; i < arr.length; i++){
+            System.out.print(arr[i] + " ");
+            if ((i % 5) == 0)
+                System.out.println(" ");
+        }
+    }
+}
