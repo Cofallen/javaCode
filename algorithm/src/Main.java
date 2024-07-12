@@ -20,7 +20,8 @@
 public class Main {
     public static void main(String[] args){
 //        insertionSort.end();
-        shellSort.end();
+//        shellSort.end();
+        mergeSort.end();
     }
 }
 

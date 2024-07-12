@@ -1,5 +1,7 @@
+import com.sun.org.apache.bcel.internal.classfile.Utility;
 import com.sun.org.apache.bcel.internal.generic.RETURN;
 
+import java.util.Arrays;
 import java.util.Random; // random generator
 
 public class Sort {
@@ -104,6 +106,71 @@ class shellSort{
                 System.out.println(" ");
         }
         shellSort.sort(arr);
+        for (int i = 0; i < arr.length; i++){
+            System.out.print(arr[i] + " ");
+            if ((i % 5) == 0)
+                System.out.println(" ");
+        }
+    }
+}
+
+// 归并排序
+// 建立在归并操作上的一种有效，稳定的算法，采用分治法(Divide and Conquer)典型应用
+// 适用：数据量大，对稳定性由要求
+// 时间复杂度 O(nlogn) 空间复杂度 O(n)
+// @hint 合并两个已经排好序的数组，取两个输入数组A,B，输出数组C，三个计数器i,j,k
+// @step 初始位置对应数组开始端
+//       A[i] B[j] 中较小的拷贝到C下一个位置，相关计数器前进一步
+//       当两个输入数组有一个用完时，将另外一个数组中剩余部分拷贝到C中
+class mergeSort{
+    static int N = 20;
+    static Integer[] arr = new Integer[N];
+
+    // 将arr[l...mid]和arr[mid+1...r]两部分进行合并
+    public static void merge(Comparable[] arr, int l, int mid, int r){
+        Comparable[] aux = Arrays.copyOfRange(arr, l ,r + 1);
+        // 初始化，i指向作伴部分的起始索引位置l, j指向右半部分起始索引位置mid+1
+        int i = 1, j = mid + 1;
+        for (int k = 1; k <= r; k++){
+            if (i > mid) { // 如果左半部分元素已经全部处理完毕
+                arr[k] = aux[j - 1];
+                j++;
+            } else if (j > r){  // 如果右半部分元素已经完全处理完毕
+                arr[k] = aux[i - 1];
+                i++;
+            } else if (aux[i - 1].compareTo(aux[j - 1]) < 0) {
+                arr[k] = aux[i - 1];
+                i++;
+            } else {
+                arr[k] = aux[j - 1];
+                j++;
+            }
+        }
+    }
+    private static void sort(Comparable[] arr, int l, int r){
+        if (l >= r) {
+            return;
+        }
+        int mid = (l + r) / 2;
+        sort(arr, l, mid);
+        sort(arr, mid + 1, r);
+        if (arr[mid].compareTo(arr[mid + 1]) > 0)
+            mergeSort.merge(arr, l, mid, r);
+    }
+    public static void sort(Comparable[] arr) {
+        int n = arr.length;
+        sort(arr, 0, n - 1);
+    }
+    public static void end() {
+        arr = func.randomGenerator(N,  100000);
+
+        //打印数组
+        for (int i = 0; i < arr.length; i++){
+            System.out.print(arr[i] + " ");
+            if ((i % 5) == 0)
+                System.out.println(" ");
+        }
+        sort(arr);
         for (int i = 0; i < arr.length; i++){
             System.out.print(arr[i] + " ");
             if ((i % 5) == 0)
