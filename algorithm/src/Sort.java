@@ -122,44 +122,47 @@ class shellSort{
 // @step 初始位置对应数组开始端
 //       A[i] B[j] 中较小的拷贝到C下一个位置，相关计数器前进一步
 //       当两个输入数组有一个用完时，将另外一个数组中剩余部分拷贝到C中
+// @url  https://segmentfault.com/a/1190000037644412
 class mergeSort{
     static int N = 20;
     static Integer[] arr = new Integer[N];
 
     // 将arr[l...mid]和arr[mid+1...r]两部分进行合并
-    public static void merge(Comparable[] arr, int l, int mid, int r){
-        Comparable[] aux = Arrays.copyOfRange(arr, l ,r + 1);
-        // 初始化，i指向作伴部分的起始索引位置l, j指向右半部分起始索引位置mid+1
-        int i = 1, j = mid + 1;
-        for (int k = 1; k <= r; k++){
-            if (i > mid) { // 如果左半部分元素已经全部处理完毕
-                arr[k] = aux[j - 1];
-                j++;
-            } else if (j > r){  // 如果右半部分元素已经完全处理完毕
-                arr[k] = aux[i - 1];
-                i++;
-            } else if (aux[i - 1].compareTo(aux[j - 1]) < 0) {
-                arr[k] = aux[i - 1];
-                i++;
-            } else {
-                arr[k] = aux[j - 1];
-                j++;
-            }
-        }
-    }
-    private static void sort(Comparable[] arr, int l, int r){
-        if (l >= r) {
+    private static void recurse(Comparable[] arr){
+        if (arr == null || arr.length <= 1){
             return;
         }
-        int mid = (l + r) / 2;
-        sort(arr, l, mid);
-        sort(arr, mid + 1, r);
-        if (arr[mid].compareTo(arr[mid + 1]) > 0)
-            mergeSort.merge(arr, l, mid, r);
+        Integer[] newArr = new Integer[arr.length];
+        sort(arr, 0, arr.length - 1, newArr);
     }
-    public static void sort(Comparable[] arr) {
-        int n = arr.length;
-        sort(arr, 0, n - 1);
+
+    public static Comparable[] sort(Comparable[] arr, int left, int right, Comparable[] newArr) {
+        // base case
+        if (left >= right) {
+            return null;
+        }
+        // 分
+        int mid = left + (right - left) / 2;
+        // 治
+        sort(arr, left, mid, newArr);
+        sort(arr, mid + 1, right, newArr);
+        // 辅助的 array
+        for (int i = left; i <= right; i++) {
+            newArr[i] = arr[i];
+        }
+        // 合
+        int i = left, j = mid + 1, k = left;
+        while (i <= mid && j <= right) {
+            if (newArr[i].compareTo(newArr[j]) <= 0) {
+                arr[k++] = newArr[i++];
+            } else {
+                arr[k++] = newArr[j++];
+            }
+        }
+        while (i <= mid) {
+            arr[k++] = newArr[i++];
+        }
+        return newArr;
     }
     public static void end() {
         arr = func.randomGenerator(N,  100000);
@@ -167,13 +170,13 @@ class mergeSort{
         //打印数组
         for (int i = 0; i < arr.length; i++){
             System.out.print(arr[i] + " ");
-            if ((i % 5) == 0)
+            if (((i + 1) % 5) == 0)
                 System.out.println(" ");
         }
-        sort(arr);
+        mergeSort.recurse(arr);
         for (int i = 0; i < arr.length; i++){
             System.out.print(arr[i] + " ");
-            if ((i % 5) == 0)
+            if (((i + 1) % 5) == 0)
                 System.out.println(" ");
         }
     }
